@@ -65,8 +65,10 @@
         color: #40b2dc;
         background-color: #fff;
     }
-    &:active {
-        color: #40b2dc;
-        font-weight: 500;
-    }
+}
+
+.nav-link-item.active {
+    color: #444;
+    background-color: #fff;
+    font-weight: 500;
 }

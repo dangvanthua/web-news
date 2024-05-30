@@ -2,8 +2,9 @@ import { DatePipe } from '@angular/common';
 import { TruncatePipe } from '../../pipe/truncate.pipe';
 import { NewService } from '../../services/news.service';
 import { HeaderComponent } from './../../components/header/header.component';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { DataService } from '../../services/data.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -22,19 +23,18 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private newsService: NewService,
-    private dataService: DataService
+    private dataService: DataService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
     this.getTopHeadLines();
     this.dataService.getArticleCategory().subscribe((articles: any[]) => {
-      console.log(articles);
+      const nameCategory = localStorage.getItem('nameCategory');
+      this.selectedName =
+        typeof nameCategory === 'string' ? JSON.parse(nameCategory) : 'general';
       this.articleCategory = articles;
     });
-  }
-
-  onSelectCategoryName(categoryName: string): void {
-    this.selectedName = categoryName;
   }
 
   getTopHeadLines() {
@@ -70,5 +70,10 @@ export class HomeComponent implements OnInit {
 
   onImageError(event: Event) {
     (event.target as HTMLImageElement).src = this.defaultPathImage;
+  }
+
+  viewArticle(article: any) {
+    this.dataService.setArticle(article);
+    this.router.navigate(['/news', article.title]);
   }
 }

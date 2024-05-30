@@ -17,39 +17,46 @@
             <ul class="nav-list">
                 <li>
                     <a class="nav-link-item" href="#"
-                        (click)="fetchNewsByCategory($event, 'general', 'Tổng hợp')">Tổng
+                        (click)="fetchNewsByCategory($event, 'general', 'Tổng hợp')"
+                        [class.active]="activeCategory === 'general'">Tổng
                         hợp</a>
                 </li>
                 <li>
                     <a class="nav-link-item" href="#"
-                        (click)="fetchNewsByCategory($event, 'business', 'Kinh doanh')">Kinh
+                        (click)="fetchNewsByCategory($event, 'business', 'Kinh doanh')"
+                        [class.active]="activeCategory === 'business'">Kinh
                         doanh</a>
                 </li>
                 <li>
                     <a class="nav-link-item" href="#"
-                        (click)="fetchNewsByCategory($event, 'technology', 'Công nghệ')">Công
+                        (click)="fetchNewsByCategory($event, 'technology', 'Công nghệ')"
+                        [class.active]="activeCategory === 'technology'">Công
                         nghệ
                     </a>
                 </li>
                 <li>
                     <a class="nav-link-item" href="#"
-                        (click)="fetchNewsByCategory($event, 'entertainment', 'Giải trí')">Giải
+                        (click)="fetchNewsByCategory($event, 'entertainment', 'Giải trí')"
+                        [class.active]="activeCategory === 'entertainment'">Giải
                         trí</a>
                 </li>
                 <li>
                     <a class="nav-link-item" href="#"
-                        (click)="fetchNewsByCategory($event, 'sports', 'Thể thao')">Thể
+                        (click)="fetchNewsByCategory($event, 'sports', 'Thể thao')"
+                        [class.active]="activeCategory === 'sports'">Thể
                         thao</a>
                 </li>
                 <li>
                     <a class="nav-link-item" href="#"
-                        (click)="fetchNewsByCategory($event, 'science', 'Khoa học')">Khoa
+                        (click)="fetchNewsByCategory($event, 'science', 'Khoa học')"
+                        [class.active]="activeCategory === 'science'">Khoa
                         học
                     </a>
                 </li>
                 <li>
                     <a class="nav-link-item" href="#"
-                        (click)="fetchNewsByCategory($event, 'health', 'Sức khỏe')">Sức
+                        (click)="fetchNewsByCategory($event, 'health', 'Sức khỏe')"
+                        [class.active]="activeCategory === 'health'">Sức
                         khỏe
                     </a>
                 </li>

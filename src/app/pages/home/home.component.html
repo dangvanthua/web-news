@@ -1,12 +1,13 @@
-<app-header (selectCategory)="onSelectCategoryName($event)"></app-header>
 <section class="section-news">
     <main>
         <div class="news-hottop">
+            @if(articles.length > 0) {
             <h3 class="heading-new">Top news</h3>
+            }
             <div class="container-topnews" #containerTopNews>
                 <div class="topnews">
                     @for (article of articles.slice(0, 10); track $index) {
-                    <div class="new">
+                    <div class="new" (click)="viewArticle(article)">
                         <div class="card card-news" style="width: 14rem;">
                             <img [src]="article.urlToImage"
                                 class="card-img-top card-img-news"
@@ -27,11 +28,13 @@
         </div>
 
         <div class="container news-category mt-5">
+            @if(articleCategory.length > 0) {
             <h2 class="heading-category mb-4">{{selectedName}}</h2>
+            }
             <div class="row">
                 @for (ac of articleCategory; track $index) {
-                <div class="col-lg-3 col-md-6 mb-3">
-                    <div class="card" style="width: 14rem;">
+                <div class="col-lg-3 col-md-6 mb-3" (click)="viewArticle(ac)">
+                    <div class="card category-card" style="width: 14rem;">
                         <img [src]="ac.urlToImage"
                             class="card-img-top card-img-news" [alt]="ac.title"
                             (error)="onImageError($event)">
