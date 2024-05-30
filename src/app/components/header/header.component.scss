@@ -58,4 +58,15 @@
     font-size: 16px;
     text-decoration: none;
     font-weight: 500;
+    transition: all 0.3s;
+    padding: 4px 8px;
+    border-radius: 4px;
+    &:hover {
+        color: #40b2dc;
+        background-color: #fff;
+    }
+    &:active {
+        color: #40b2dc;
+        font-weight: 500;
+    }
 }
