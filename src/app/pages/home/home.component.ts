@@ -5,6 +5,8 @@ import { HeaderComponent } from './../../components/header/header.component';
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { DataService } from '../../services/data.service';
 import { Router } from '@angular/router';
+import { Article } from '../../model/article.model';
+import { CountryService } from '../../services/country.service';
 
 @Component({
   selector: 'app-home',
@@ -14,32 +16,35 @@ import { Router } from '@angular/router';
   styleUrl: './home.component.scss',
 })
 export class HomeComponent implements OnInit {
-  articles: any[] = [];
-  articleCategory: any[] = [];
+  articles: Article[] = [];
+  articleCategory: Article[] = [];
   defaultPathImage = '/assets/images/error404.png';
   selectedName = 'Tổng quan';
-  @ViewChild('containerTopNews', { static: false })
-  containerTopNews!: ElementRef;
+  selectedCountry = 'us';
+  @ViewChild('containerTopNews', { static: false }) containerTopNews!: ElementRef;
 
   constructor(
     private newsService: NewService,
     private dataService: DataService,
+    private countryService: CountryService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
-    this.getTopHeadLines();
-    this.dataService.getArticleCategory().subscribe((articles: any[]) => {
+    this.dataService.getArticleCategory().subscribe((articles: Article[]) => {
       const nameCategory = localStorage.getItem('nameCategory');
       this.selectedName =
-        typeof nameCategory === 'string' ? JSON.parse(nameCategory) : 'general';
+        typeof nameCategory === 'string' ? JSON.parse(nameCategory) : 'Tổng hợp';
       this.articleCategory = articles;
+    });
+    this.countryService.selectedCountry$.subscribe(country => {
+      this.selectedCountry = country;
+      this.getTopHeadLines();
     });
   }
 
   getTopHeadLines() {
-    const country = 'us';
-    this.newsService.getTopHeadLines(country).subscribe({
+    this.newsService.getTopHeadLines(this.selectedCountry).subscribe({
       next: (respone: any) => {
         this.articles = respone.articles;
       },
@@ -63,8 +68,7 @@ export class HomeComponent implements OnInit {
     const screenWidth = window.innerWidth;
     const percentMoveX = (event.clientX / screenWidth) * 100;
 
-    const topnews =
-      this.containerTopNews.nativeElement.querySelector('.topnews');
+    const topnews = this.containerTopNews.nativeElement.querySelector('.topnews');
     topnews.style.transform = `translateX(-${percentMoveX}%)`;
   }
 
