@@ -7,7 +7,8 @@
 }
 
 .section-news {
-    margin: 250px 0;
+    margin: 160px 0;
+    padding: 32px 0;
 }
 
 .topnews {
@@ -57,13 +58,11 @@
 .card-title {
     font-size: 16px;
     font-weight: 500;
-    color: #444;
     line-height: 1.4;
 }
 
 .card-body {
     font-size: 14px;
-    color: #777;
 }
 
 .news-category {
@@ -84,6 +83,7 @@
     transition: all 0.3s;
     &:hover {
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
+        transform: translateY(-4px);
     }
 }
 
@@ -94,12 +94,10 @@
 .card-source {
     font-size: 14px;
     font-weight: 500;
-    color: #000;
 }
 
 .loading-indicator {
     text-align: center;
     margin: 20px 0;
     font-size: 16px;
-    color: #333;
 }

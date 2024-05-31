@@ -5,6 +5,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { Subject, debounceTime, distinctUntilChanged, filter, switchMap } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { CountryService } from '../../services/country.service';
+import { DarkModeService } from '../../services/dark-mode.service';
 
 @Component({
   selector: 'app-header',
@@ -38,6 +39,7 @@ export class HeaderComponent implements OnInit {
     private newsService: NewService,
     private dataService: DataService,
     private countryService: CountryService,
+    public darkModeService: DarkModeService,
     private router: Router
   ) {
     this.router.events.pipe(
@@ -73,6 +75,10 @@ export class HeaderComponent implements OnInit {
     if (savedCountry) {
       this.selectedCountry = savedCountry;
     }
+  }
+
+  toggleDarkMode() {
+    this.darkModeService.updateDarkMode();
   }
 
   fetchNewsByCategory(event: Event | null, category: string, nameCategory: string) {

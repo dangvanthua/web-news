@@ -1,15 +1,14 @@
 .news-article {
-    margin-top: 200px;
+    margin-top: 150px;
     padding: 52px;
+    color: #40b2dc;
     .article-title {
         font-size: 24px;
         font-weight: 600;
-        color: #444;
     }
     .article-description {
         font-size: 16px;
         font-weight: 500;
-        color: #666;
         line-height: 1.4;
         margin-top: 24px;
     }
@@ -22,7 +21,6 @@
     .article-author {
         font-size: 16px;
         font-weight: 500;
-        color: #40b2dc;
         margin-bottom: 0;
     }
     .article-date {
@@ -40,9 +38,7 @@
         font-size: 14px;
         font-weight: 500;
         text-decoration: none;
-        color: #40b2dc;
         display: inline-block;
-        border: 1px solid #40b2dc;
         padding: 3px 6px;
         transition: all 0.3s;
         display: inline-block;
@@ -77,7 +73,6 @@
 
 .card-date {
     font-size: 12px;
-    color: #555;
 }
 
 .card-news {
