@@ -2,7 +2,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { NewService } from '../../services/news.service';
 import { DataService } from '../../services/data.service';
 import { NavigationEnd, Router } from '@angular/router';
-import { filter } from 'rxjs';
+import { Subject, debounceTime, distinctUntilChanged, filter, switchMap } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { CountryService } from '../../services/country.service';
 
@@ -31,6 +31,8 @@ export class HeaderComponent implements OnInit {
     { code: 'gb', name: 'Anh' },
   ];
   selectedCountry = 'us';
+  @Output() searchEvent = new EventEmitter<string>();
+  searchTerm$ = new Subject<string>();
 
   constructor(
     private newsService: NewService,
@@ -46,6 +48,15 @@ export class HeaderComponent implements OnInit {
         ? JSON.parse(activeCategoryString)
         : 'general';
     });
+
+    this.searchTerm$.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap(term => term ? this.newsService.search(term) : [])
+    )
+      .subscribe(data => {
+        this.newsService.updateHome(data);
+      })
   }
 
   ngOnInit(): void {
@@ -97,4 +108,15 @@ export class HeaderComponent implements OnInit {
     this.countryService.setSelectedCountry(this.selectedCountry);
     localStorage.setItem('selectedCountry', this.selectedCountry);
   }
+
+  onSearchTermChange(event: Event): void {
+    const searchTerm = (event.target as HTMLInputElement).value.trim();
+    if (searchTerm) {
+      this.searchTerm$.next(searchTerm);
+    } else {
+      this.newsService.resetSearch();
+    }
+  }
+
+
 }

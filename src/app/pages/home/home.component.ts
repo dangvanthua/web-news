@@ -16,11 +16,15 @@ import { CountryService } from '../../services/country.service';
   styleUrl: './home.component.scss',
 })
 export class HomeComponent implements OnInit {
+
   articles: Article[] = [];
   articleCategory: Article[] = [];
   defaultPathImage = '/assets/images/error404.png';
   selectedName = 'Tổng quan';
   selectedCountry = 'us';
+  searchData: Article[] = [];
+  isSearching: boolean = false;
+
   @ViewChild('containerTopNews', { static: false }) containerTopNews!: ElementRef;
 
   constructor(
@@ -35,12 +39,26 @@ export class HomeComponent implements OnInit {
       const nameCategory = localStorage.getItem('nameCategory');
       this.selectedName =
         typeof nameCategory === 'string' ? JSON.parse(nameCategory) : 'Tổng hợp';
+      this.isSearching = false;
       this.articleCategory = articles;
     });
+
     this.countryService.selectedCountry$.subscribe(country => {
       this.selectedCountry = country;
       this.getTopHeadLines();
     });
+
+    this.newsService.getSearchData().subscribe(data => {
+      if (data && data.articles) {
+        this.isSearching = true;
+        this.searchData = data.articles;
+        // cap nhat lai de lay du lieu theo title
+        this.dataService.setArticles(data.articles);
+        // console.log(this.searchData);
+      } else {
+        this.isSearching = false;
+      }
+    })
   }
 
   getTopHeadLines() {

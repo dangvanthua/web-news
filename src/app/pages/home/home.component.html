@@ -1,9 +1,8 @@
 <section class="section-news">
     <main>
+        @if(articles.length > 0) {
         <div class="news-hottop">
-            @if(articles.length > 0) {
             <h3 class="heading-new">Top news</h3>
-            }
             <div class="container-topnews" #containerTopNews>
                 <div class="topnews">
                     @for (article of articles.slice(0, 10); track $index) {
@@ -20,11 +19,29 @@
                 </div>
             </div>
         </div>
-
+        } @if(isSearching) {
         <div class="container news-category mt-5">
-            @if(articleCategory.length > 0) {
+            <h3 class="heading-category mb-3">Search Result</h3>
+            <div class="row">
+                @for (articalSearch of searchData.slice(0, 20); track $index) {
+                <div class="col-lg-3 col-md-6 mb-3" (click)="viewArticle(articalSearch)">
+                    <div class="card category-card" style="width: 14rem;">
+                        <img [src]="articalSearch.urlToImage" class="card-img-top card-img-news" [alt]="articalSearch.title" (error)="onImageError($event)">
+                        <div class="card-body card-content">
+                            <span class="card-source">{{articalSearch.source.name}}</span>
+                            <p class="card-text pt-2">{{articalSearch.title}}</p>
+                            <small class="card-date"><b>Published At: </b>
+                                {{articalSearch.publishedAt | date:
+                                'short'}}</small>
+                        </div>
+                    </div>
+                </div>
+                }
+            </div>
+        </div>
+        } @if(!isSearching && articleCategory.length > 0) {
+        <div class="container news-category mt-5">
             <h2 class="heading-category mb-4">{{selectedName}}</h2>
-            }
             <div class="row">
                 @for (ac of articleCategory; track $index) {
                 <div class="col-lg-3 col-md-6 mb-3" (click)="viewArticle(ac)">
@@ -41,5 +58,6 @@
                 }
             </div>
         </div>
+        }
     </main>
 </section>

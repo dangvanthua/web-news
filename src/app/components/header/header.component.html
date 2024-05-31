@@ -7,7 +7,7 @@
 
         <div class="top-nav-search">
             <i class="fa-solid fa-magnifying-glass top-icon-search"></i>
-            <input type="text" name="search" placeholder="Tìm kiếm">
+            <input type="text" name="search" placeholder="Tìm kiếm" (input)="onSearchTermChange($event)">
         </div>
 
         <div class="top-nav-countries">
