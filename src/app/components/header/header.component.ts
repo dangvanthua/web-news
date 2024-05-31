@@ -50,7 +50,7 @@ export class HeaderComponent implements OnInit {
     });
 
     this.searchTerm$.pipe(
-      debounceTime(300),
+      debounceTime(500),
       distinctUntilChanged(),
       switchMap(term => term ? this.newsService.search(term) : [])
     )

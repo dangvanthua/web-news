@@ -2,7 +2,7 @@ import { DatePipe } from '@angular/common';
 import { TruncatePipe } from '../../pipe/truncate.pipe';
 import { NewService } from '../../services/news.service';
 import { HeaderComponent } from './../../components/header/header.component';
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, Input, OnInit, ViewChild } from '@angular/core';
 import { DataService } from '../../services/data.service';
 import { Router } from '@angular/router';
 import { Article } from '../../model/article.model';
@@ -23,7 +23,11 @@ export class HomeComponent implements OnInit {
   selectedName = 'Tổng quan';
   selectedCountry = 'us';
   searchData: Article[] = [];
+  displayedSearchData: Article[] = [];
   isSearching: boolean = false;
+  isLoading = false;
+  private increment = 20;
+  private currentIndex = 0;
 
   @ViewChild('containerTopNews', { static: false }) containerTopNews!: ElementRef;
 
@@ -49,16 +53,43 @@ export class HomeComponent implements OnInit {
     });
 
     this.newsService.getSearchData().subscribe(data => {
+      console.log(data);
       if (data && data.articles) {
-        this.isSearching = true;
-        this.searchData = data.articles;
-        // cap nhat lai de lay du lieu theo title
-        this.dataService.setArticles(data.articles);
-        // console.log(this.searchData);
+        this.isLoading = true;
+        setTimeout(() => {
+          this.isSearching = true;
+          this.searchData = data.articles;
+          this.currentIndex = 0;
+          this.displayedSearchData = this.searchData.slice(0, this.increment);
+          // cap nhat lai de lay du lieu theo title
+          this.dataService.setArticles(data.articles);
+          this.isLoading = false;
+        }, 1000);
       } else {
         this.isSearching = false;
       }
     })
+  }
+
+  @HostListener('window:scroll', ['$event'])
+  onScroll(event: any): void {
+    const pos = (document.documentElement.scrollTop || document.body.scrollTop) + document.documentElement.offsetHeight;
+    const max = document.documentElement.scrollHeight;
+    if (pos >= max - 100) {
+      this.loadMore();
+    }
+  }
+
+  loadMore() {
+    if (this.isSearching && !this.isLoading && this.currentIndex < this.searchData.length) {
+      this.isLoading = true;
+      setTimeout(() => {
+        this.currentIndex += this.increment;
+        const newItem = this.searchData.slice(this.currentIndex, this.currentIndex + this.increment);
+        this.displayedSearchData = [...this.displayedSearchData, ...newItem];
+        this.isLoading = false;
+      }, 1000);
+    }
   }
 
   getTopHeadLines() {
