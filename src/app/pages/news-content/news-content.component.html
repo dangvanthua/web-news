@@ -10,27 +10,39 @@
     </div>
     <p class="article-description">{{article.description}}</p>
     @if (article.urlToImage) {
-    <img [src]="article.urlToImage" [alt]="article.title" class="article-image"> }@else {
-    <img src="/assets/images/error404.png" [alt]="article.title" class="article-image"> }
+    <img [src]="article.urlToImage" [alt]="article.title" class="article-image">
+    }@else {
+    <img src="/assets/images/error404.png" [alt]="article.title"
+        class="article-image"> }
     <a [href]="article.url" class="article-reference">Có thể xem bài
         viết tại đây</a> }@else {
     <p>No article available data</p>
     }
 
-    <div class="container-topnews" #containerTopNews>
-        <h3 class="heading-related">Các bài viết liên quan</h3>
-        <div class="topnews">
-            @for (article of articles.slice(0, 7); track $index) {
-            <div class="new" (click)="viewArticle(article)">
-                <div class="card card-news" style="width: 14rem;">
-                    <img [src]="article.urlToImage" class="card-img-top card-img-news" [alt]="article.title" (error)="onImageError($event)">
-                    <div class="card-body info-news">
-                        <p class="card-text card-title">{{article.title | truncate: 35}}</p>
-                        <p class="card-text card-date">{{article.publishedAt | date: "medium"}}</p>
+    <div class="news-info-container">
+        <h2 class="heading-related">Các bài liên quan</h2>
+        <div class="container-slider">
+            <div class="slide" #slideContainer>
+                @for (article of articles.slice(0, 6); track $index) {
+                <div class="item-content"
+                    [style.background-image]="'url(' + article.urlToImage + ')'">
+                    <div class="content">
+                        <div class="name">{{article.author}}</div>
+                        <div class="des">{{article.description}}
+                        </div>
+                        <button (click)="viewArticle(article)">View now</button>
                     </div>
                 </div>
+                }
             </div>
-            }
+
+            <div class="button">
+                <button class="prev"><i
+                        class="fa-solid fa-chevron-left"></i></button>
+                <button class="next"><i
+                        class="fa-solid fa-chevron-right"></i></button>
+            </div>
         </div>
     </div>
+
 </div>

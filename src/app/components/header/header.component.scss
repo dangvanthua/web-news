@@ -23,6 +23,7 @@
         padding: 8px;
         border-radius: 9px;
         background-color: #fff;
+        color: #444;
     }
 }
 
@@ -80,8 +81,8 @@
 }
 
 .nav-link-item.active {
-    color: #fff;
-    background-color: #40b2dc;
+    color: #40b2dc;
+    background-color: #fff;
     font-weight: 500;
 }
 

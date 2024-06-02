@@ -52,6 +52,12 @@
             </div>
             @if (isLoading) {
             <p class="loading-indicator">Loading more articles...</p>
+            } @if(!isLoading && currentIndex
+            < searchData.length) { <div
+                class="d-flex justify-content-center mt-3">
+                <button type="button" class="btn-load" (click)="loadMore()">Load
+                    more</button>
+            </div>
             }
         </div>
         } @if(!isSearching && articleCategory.length > 0) {

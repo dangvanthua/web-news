@@ -101,3 +101,17 @@
     margin: 20px 0;
     font-size: 16px;
 }
+
+.btn-load {
+    margin: 20px auto;
+    font-size: 18px;
+    background-color: transparent;
+    padding: 6px 12px;
+    border: 1px solid #40b2dc;
+    transition: all 0.3s;
+    border-radius: 9px;
+    &:hover {
+        opacity: 0.85;
+        background-color: #40b2dc;
+    }
+}

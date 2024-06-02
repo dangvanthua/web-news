@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, Observable } from "rxjs";
+import { BehaviorSubject, Observable, of, tap } from "rxjs";
 import { Article } from "../model/article.model";
 
 @Injectable({ providedIn: 'root' })
@@ -15,11 +15,20 @@ export class NewService {
     constructor(private http: HttpClient) { }
 
     getTopHeadLines(country: string): Observable<any> {
-        const params = new HttpParams()
-            .set('country', country)
-            .set('apiKey', this.apiKey);
+        const cachedData = localStorage.getItem(`topHeadLines_${country}`);
+        if (cachedData) {
+            return of(JSON.parse(cachedData));
+        } else {
+            const params = new HttpParams()
+                .set('country', country)
+                .set('apiKey', this.apiKey);
 
-        return this.http.get(this.apiUrl, { params });
+            return this.http.get<any>(this.apiUrl, { params })
+                .pipe(tap(data => {
+                    localStorage.setItem(`topHeadLines_${country}`, JSON.stringify(data));
+                })
+                );
+        }
     }
 
     getNewsByCategoryAndCountry(category: string, country: string): Observable<any> {

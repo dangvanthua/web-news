@@ -27,7 +27,7 @@ export class HomeComponent implements OnInit {
   isSearching: boolean = false;
   isLoading = false;
   private increment = 20;
-  private currentIndex = 0;
+  currentIndex = 0;
 
   @ViewChild('containerTopNews', { static: false }) containerTopNews!: ElementRef;
 
@@ -53,7 +53,6 @@ export class HomeComponent implements OnInit {
     });
 
     this.newsService.getSearchData().subscribe(data => {
-      console.log(data);
       if (data && data.articles) {
         this.isLoading = true;
         setTimeout(() => {
@@ -71,17 +70,9 @@ export class HomeComponent implements OnInit {
     })
   }
 
-  @HostListener('window:scroll', ['$event'])
-  onScroll(event: any): void {
-    const pos = (document.documentElement.scrollTop || document.body.scrollTop) + document.documentElement.offsetHeight;
-    const max = document.documentElement.scrollHeight;
-    if (pos >= max - 100) {
-      this.loadMore();
-    }
-  }
 
   loadMore() {
-    if (this.isSearching && !this.isLoading && this.currentIndex < this.searchData.length) {
+    if (this.currentIndex < this.searchData.length) {
       this.isLoading = true;
       setTimeout(() => {
         this.currentIndex += this.increment;

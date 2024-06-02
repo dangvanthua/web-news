@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { DataService } from '../../services/data.service';
 import { HeaderComponent } from '../../components/header/header.component';
 import { DatePipe } from '@angular/common';
@@ -18,7 +18,6 @@ export class NewsContentComponent implements OnInit, OnDestroy {
   defaultPathImage = '/assets/images/error404.png';
   article: Article | null = null;
   articles: Article[] = [];
-  @ViewChild('containerTopNews', { static: false }) containerTopNews!: ElementRef;
   private routeSub!: Subscription;
 
   constructor(private dataService: DataService, private router: Router, private route: ActivatedRoute) { }
@@ -32,25 +31,37 @@ export class NewsContentComponent implements OnInit, OnDestroy {
     this.dataService.getArticleCategory().subscribe((articles: Article[]) => {
       this.articles = articles;
     });
+
+    const nextElement = document.querySelector('.next');
+    const prevElement = document.querySelector('.prev');
+
+    if (nextElement) {
+      nextElement.addEventListener('click', () => {
+        const items = document.querySelectorAll('.item-content');
+        if (items) {
+          const slide = document.querySelector('.slide');
+          if (slide) {
+            slide.appendChild(items[0]);
+          }
+        }
+      });
+    }
+
+    if (prevElement) {
+      prevElement.addEventListener('click', () => {
+        const items = document.querySelectorAll('.item-content');
+        if (items) {
+          const slide = document.querySelector('.slide');
+          if (slide) {
+            slide.prepend(items[items.length - 1]);
+          }
+        }
+      });
+    }
   }
 
   ngOnDestroy(): void {
     this.routeSub.unsubscribe();
-  }
-
-  ngAfterViewInit() {
-    if (this.containerTopNews) {
-      const container = this.containerTopNews.nativeElement;
-      container.addEventListener('mousemove', this.onMouseMove.bind(this));
-    }
-  }
-
-  onMouseMove(event: MouseEvent) {
-    const screenWidth = window.innerWidth;
-    const percentMoveX = (event.clientX / screenWidth) * 100;
-
-    const topnews = this.containerTopNews.nativeElement.querySelector('.topnews');
-    topnews.style.transform = `translateX(-${percentMoveX}%)`;
   }
 
   viewArticle(article: Article) {
@@ -61,4 +72,5 @@ export class NewsContentComponent implements OnInit, OnDestroy {
   onImageError(event: Event) {
     (event.target as HTMLImageElement).src = this.defaultPathImage;
   }
+
 }
