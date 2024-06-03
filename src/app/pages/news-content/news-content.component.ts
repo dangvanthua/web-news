@@ -25,7 +25,10 @@ export class NewsContentComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.routeSub = this.route.params.subscribe(params => {
       const title = params['id'];
-      this.article = this.dataService.getArticleByTitle(title) || null;
+      this.dataService.getArticleByTitle(title).subscribe(article => {
+        this.article = article || null;
+        this.dataService.searchMode = false;
+      });
     });
 
     this.dataService.getArticleCategory().subscribe((articles: Article[]) => {

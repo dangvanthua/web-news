@@ -10,10 +10,8 @@
     </div>
     <p class="article-description">{{article.description}}</p>
     @if (article.urlToImage) {
-    <img [src]="article.urlToImage" [alt]="article.title" class="article-image">
-    }@else {
-    <img src="/assets/images/error404.png" [alt]="article.title"
-        class="article-image"> }
+    <img [src]="article.urlToImage" [alt]="article.title" class="article-image"> }@else {
+    <img src="/assets/images/error404.png" [alt]="article.title" class="article-image"> }
     <a [href]="article.url" class="article-reference">Có thể xem bài
         viết tại đây</a> }@else {
     <p>No article available data</p>
@@ -24,11 +22,11 @@
         <div class="container-slider">
             <div class="slide" #slideContainer>
                 @for (article of articles.slice(0, 6); track $index) {
-                <div class="item-content"
-                    [style.background-image]="'url(' + article.urlToImage + ')'">
+                <div class="item-content" [style.background-image]="'url(' + article.urlToImage + ')'">
                     <div class="content">
-                        <div class="name">{{article.author}}</div>
-                        <div class="des">{{article.description}}
+                        <div class="name">{{article.author | truncate: 20}}
+                        </div>
+                        <div class="des">{{article.description | truncate: 75}}
                         </div>
                         <button (click)="viewArticle(article)">View now</button>
                     </div>

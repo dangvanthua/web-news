@@ -6,11 +6,13 @@ import { Subject, debounceTime, distinctUntilChanged, filter, switchMap } from '
 import { FormsModule } from '@angular/forms';
 import { CountryService } from '../../services/country.service';
 import { DarkModeService } from '../../services/dark-mode.service';
+import { Article } from '../../model/article.model';
+import { TruncatePipe } from '../../pipe/truncate.pipe';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, TruncatePipe],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
@@ -34,6 +36,8 @@ export class HeaderComponent implements OnInit {
   selectedCountry = 'us';
   @Output() searchEvent = new EventEmitter<string>();
   searchTerm$ = new Subject<string>();
+  resultSearch: Article[] = [];
+  defaultPathImage = '/assets/images/error404.png';
 
   constructor(
     private newsService: NewService,
@@ -58,6 +62,8 @@ export class HeaderComponent implements OnInit {
     )
       .subscribe(data => {
         this.newsService.updateHome(data);
+        this.resultSearch = data.articles;
+        this.dataService.searchMode = true;
       })
   }
 
@@ -90,11 +96,11 @@ export class HeaderComponent implements OnInit {
         this.activeCategory = category;
         localStorage.setItem('activeCategory', JSON.stringify(category));
         this.dataService.categoryName = nameCategory;
-        // thuc hien luu vao localStorage cho category name khi chuyen trang qua lai
+        // thuc hien luu vao localStorage cho category name khi chuyen trang thai qua lai
         localStorage.setItem('nameCategory', JSON.stringify(nameCategory));
         this.dataService.setArticleCategory(respone.articles);
         this.dataService.setArticles(respone.articles);
-        if (this.router.url !== '/home') {
+        if (this.router.url !== '/home' && this.router.url !== '/') {
           this.router.navigate(['/home']);
         }
       },
@@ -117,12 +123,23 @@ export class HeaderComponent implements OnInit {
 
   onSearchTermChange(event: Event): void {
     const searchTerm = (event.target as HTMLInputElement).value.trim();
-    if (searchTerm) {
+    if (searchTerm.length > 0) {
       this.searchTerm$.next(searchTerm);
     } else {
       this.newsService.resetSearch();
+      this.resultSearch = [];
+      this.dataService.searchMode = false;
     }
   }
 
+  onImageError(event: Event) {
+    (event.target as HTMLImageElement).src = this.defaultPathImage;
+  }
 
+  viewArticle(article: any) {
+    this.dataService.setArticle(article);
+    this.router.navigate(['/news', article.title]);
+    this.newsService.resetSearch();
+    this.resultSearch = [];
+  }
 }

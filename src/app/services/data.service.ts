@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, map, of } from 'rxjs';
 import { Article } from '../model/article.model';
 
 @Injectable({
@@ -9,6 +9,7 @@ export class DataService {
   categoryName!: string;
   private article: Article | null = null;
   private articles: Article[] = [];
+  searchMode: boolean = false;
   private _articleCategory: BehaviorSubject<Article[]> = new BehaviorSubject<Article[]>(
     []
   );
@@ -37,9 +38,15 @@ export class DataService {
     return articles ? JSON.parse(articles) : [];
   }
 
-  getArticleByTitle(title: string): Article | undefined {
-    const articles = this.getArticles();
-    return articles.find((article: Article) => article.title === title);
+  getArticleByTitle(title: string): Observable<Article | undefined> {
+    if (this.searchMode) {
+      const articles = this.getArticles();
+      return of(articles.find((article: Article) => article.title === title));
+    }
+
+    return this.articleCategory$.pipe(
+      map(articles => articles.find((article: Article) => article.title === title))
+    );
   }
 
   setArticleCategory(articles: Article[]): void {
