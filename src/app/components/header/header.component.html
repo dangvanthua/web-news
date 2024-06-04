@@ -1,17 +1,22 @@
 <header class="header-nav pt-3">
 
-    <div class="container-fluid top-nav d-flex align-items-center justify-content-between">
+    <div
+        class="container-fluid top-nav d-flex align-items-center justify-content-between">
         <div class="top-branch">
             <a href="#" class="top-branch-name">News</a>
         </div>
 
         <div class="top-nav-search">
             <i class="fa-solid fa-magnifying-glass top-icon-search"></i>
-            <input type="text" name="search" placeholder="Tìm kiếm" (input)="onSearchTermChange($event)"> @if (resultSearch.length > 0) {
+            <input type="text" name="search" placeholder="Tìm kiếm"
+                (input)="onSearchTermChange($event)"> @if (resultSearch.length >
+            0) {
             <ul class="list-group list-search">
                 @for (result of resultSearch; track $index) {
-                <li class="list-group-item list-group-search" (click)="viewArticle(result)">
-                    <img [src]="result.urlToImage" [alt]="result.title" (error)="onImageError($event)">
+                <li class="list-group-item list-group-search"
+                    (click)="viewArticle(result)">
+                    <img [src]="result.urlToImage" [alt]="result.title"
+                        (error)="onImageError($event)">
                     <p class="item-title">{{result.title | truncate: 50}}</p>
                 </li>
                 }
@@ -20,7 +25,8 @@
         </div>
 
         <div class="top-nav-countries">
-            <select class="top-nav-select" (change)="onCountryChange($event)" [(ngModel)]="selectedCountry">
+            <select class="top-nav-select" (change)="onCountryChange($event)"
+                [(ngModel)]="selectedCountry">
                 @for (country of countries; track $index) {
                 <option [value]="country.code">{{country.name}}</option>
                 }
@@ -54,43 +60,61 @@
 
     <div class="navbar-categories">
         <nav class="navbar navbar-expand-lg">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button"
+                data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false"
+                aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+            <div class="collapse navbar-collapse justify-content-center"
+                id="navbarNav">
                 <ul class="navbar-nav nav-list">
                     <li class="nav-item">
-                        <a class="nav-link-item" (click)="fetchNewsByCategory($event, 'general', 'Tổng hợp')" [class.active]="activeCategory === 'general'">Tổng
+                        <a class="nav-link-item"
+                            (click)="fetchNewsByCategory($event, 'general', 'Tổng hợp')"
+                            [class.active]="activeCategory === 'general'">Tổng
                             hợp
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link-item" (click)="fetchNewsByCategory($event, 'business', 'Kinh doanh')" [class.active]="activeCategory === 'business'">Kinh
+                        <a class="nav-link-item"
+                            (click)="fetchNewsByCategory($event, 'business', 'Kinh doanh')"
+                            [class.active]="activeCategory === 'business'">Kinh
                             doanh
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link-item" (click)="fetchNewsByCategory($event, 'technology', 'Công nghệ')" [class.active]="activeCategory === 'technology'">Công
+                        <a class="nav-link-item"
+                            (click)="fetchNewsByCategory($event, 'technology', 'Công nghệ')"
+                            [class.active]="activeCategory === 'technology'">Công
                             nghệ
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link-item" (click)="fetchNewsByCategory($event, 'entertainment', 'Giải trí')" [class.active]="activeCategory === 'entertainment'">Giải
+                        <a class="nav-link-item"
+                            (click)="fetchNewsByCategory($event, 'entertainment', 'Giải trí')"
+                            [class.active]="activeCategory === 'entertainment'">Giải
                             trí
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link-item" (click)="fetchNewsByCategory($event, 'sports', 'Thể thao')" [class.active]="activeCategory === 'sports'">Thể
+                        <a class="nav-link-item"
+                            (click)="fetchNewsByCategory($event, 'sports', 'Thể thao')"
+                            [class.active]="activeCategory === 'sports'">Thể
                             thao
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link-item" (click)="fetchNewsByCategory($event, 'science', 'Khoa học')" [class.active]="activeCategory === 'science'">Khoa
+                        <a class="nav-link-item"
+                            (click)="fetchNewsByCategory($event, 'science', 'Khoa học')"
+                            [class.active]="activeCategory === 'science'">Khoa
                             học
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link-item" (click)="fetchNewsByCategory($event, 'health', 'Sức khỏe')" [class.active]="activeCategory === 'health'">Sức
+                        <a class="nav-link-item"
+                            (click)="fetchNewsByCategory($event, 'health', 'Sức khỏe')"
+                            [class.active]="activeCategory === 'health'">Sức
                             khỏe
                         </a>
                     </li>

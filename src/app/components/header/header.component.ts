@@ -8,6 +8,8 @@ import { CountryService } from '../../services/country.service';
 import { DarkModeService } from '../../services/dark-mode.service';
 import { Article } from '../../model/article.model';
 import { TruncatePipe } from '../../pipe/truncate.pipe';
+import { SharedService } from '../../shared/shared.service';
+
 
 @Component({
   selector: 'app-header',
@@ -44,6 +46,7 @@ export class HeaderComponent implements OnInit {
     private dataService: DataService,
     private countryService: CountryService,
     public darkModeService: DarkModeService,
+    private sharedService: SharedService,
     private router: Router
   ) {
     this.router.events.pipe(
@@ -64,7 +67,14 @@ export class HeaderComponent implements OnInit {
         this.newsService.updateHome(data);
         this.resultSearch = data.articles;
         this.dataService.searchMode = true;
-      })
+      });
+
+    this.sharedService.resetSearch$.subscribe(reset => {
+      if (reset) {
+        this.resetSearchData();
+        this.sharedService.clearResetSearch();
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -126,9 +136,7 @@ export class HeaderComponent implements OnInit {
     if (searchTerm.length > 0) {
       this.searchTerm$.next(searchTerm);
     } else {
-      this.newsService.resetSearch();
-      this.resultSearch = [];
-      this.dataService.searchMode = false;
+      this.resetSearchData();
     }
   }
 
@@ -139,6 +147,10 @@ export class HeaderComponent implements OnInit {
   viewArticle(article: any) {
     this.dataService.setArticle(article);
     this.router.navigate(['/news', article.title]);
+    this.resetSearchData();
+  }
+
+  resetSearchData() {
     this.newsService.resetSearch();
     this.resultSearch = [];
   }

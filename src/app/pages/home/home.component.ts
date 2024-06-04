@@ -2,11 +2,12 @@ import { DatePipe } from '@angular/common';
 import { TruncatePipe } from '../../pipe/truncate.pipe';
 import { NewService } from '../../services/news.service';
 import { HeaderComponent } from './../../components/header/header.component';
-import { Component, ElementRef, HostListener, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { DataService } from '../../services/data.service';
 import { Router } from '@angular/router';
 import { Article } from '../../model/article.model';
 import { CountryService } from '../../services/country.service';
+import { SharedService } from '../../shared/shared.service';
 
 @Component({
   selector: 'app-home',
@@ -35,7 +36,8 @@ export class HomeComponent implements OnInit {
     private newsService: NewService,
     private dataService: DataService,
     private countryService: CountryService,
-    private router: Router
+    private sharedService: SharedService,
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -119,5 +121,12 @@ export class HomeComponent implements OnInit {
   viewArticle(article: any) {
     this.dataService.setArticle(article);
     this.router.navigate(['/news', article.title]);
+    this.sharedService.resetSearch();
+  }
+
+  viewArticleTopNew(article: any) {
+    this.dataService.setArticle(article);
+    this.router.navigate(['/news', article.title], { queryParams: { source: 'top-news' } });
+    this.sharedService.resetSearch();
   }
 }

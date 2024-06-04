@@ -6,6 +6,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TruncatePipe } from '../../pipe/truncate.pipe';
 import { Subscription } from 'rxjs';
 import { Article } from '../../model/article.model';
+import { NewService } from '../../services/news.service';
+import { CountryService } from '../../services/country.service';
 
 @Component({
   selector: 'app-news-content',
@@ -20,16 +22,29 @@ export class NewsContentComponent implements OnInit, OnDestroy {
   articles: Article[] = [];
   private routeSub!: Subscription;
 
-  constructor(private dataService: DataService, private router: Router, private route: ActivatedRoute) { }
+  constructor(private dataService: DataService, private countryService: CountryService, private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.routeSub = this.route.params.subscribe(params => {
       const title = params['id'];
-      this.dataService.getArticleByTitle(title).subscribe(article => {
-        this.article = article || null;
-        this.dataService.searchMode = false;
+      this.route.queryParams.subscribe(queryParams => {
+        const source = queryParams['source'];
+
+        if (source === 'top-news') {
+          const country = this.countryService.getSelectedCountry();
+          this.dataService.getArticleByTopNew(country, title).subscribe(article => {
+            this.article = article || null;
+            this.dataService.searchMode = false;
+          });
+        } else {
+          this.dataService.getArticleByTitle(title).subscribe(article => {
+            this.article = article || null;
+            this.dataService.searchMode = false;
+          });
+        }
       });
     });
+
 
     this.dataService.getArticleCategory().subscribe((articles: Article[]) => {
       this.articles = articles;

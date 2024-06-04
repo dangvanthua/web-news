@@ -13,4 +13,8 @@ export class CountryService {
     setSelectedCountry(country: string): void {
         this.selectedCountrySubject.next(country);
     }
+
+    getSelectedCountry(): string {
+        return this.selectedCountrySubject.getValue();
+    }
 }

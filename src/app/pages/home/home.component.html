@@ -6,7 +6,7 @@
             <div class="container-topnews" #containerTopNews>
                 <div class="topnews">
                     @for (article of articles.slice(0, 10); track $index) {
-                    <div class="new" (click)="viewArticle(article)">
+                    <div class="new" (click)="viewArticleTopNew(article)">
                         <div class="card card-news" style="width: 14rem;">
                             <img [src]="article.urlToImage"
                                 class="card-img-top card-img-news"

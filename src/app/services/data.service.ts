@@ -49,6 +49,14 @@ export class DataService {
     );
   }
 
+  getArticleByTopNew(country: String, title: string): Observable<Article | undefined> {
+    const saveData = localStorage.getItem(`topHeadLines_${country}`);
+    const articles = saveData ? JSON.parse(saveData).articles : [];
+
+    const article = articles.find((articleData: Article) => articleData.title === title);
+    return of(article);
+  }
+
   setArticleCategory(articles: Article[]): void {
     this._articleCategory.next(articles);
     localStorage.setItem('articleCategory', JSON.stringify(articles));
